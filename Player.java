@@ -1,15 +1,11 @@
-
 /**
- * Created by Terence on 2017-06-02.
+ * Created by Terence Wong, MAC CompSci Club(Senior) President
+ * June 2017
  */
 public abstract class Player {
     public Player(){
 
     }
-    /*public static void startTurn() throws InterruptedException{
-
-    }*/
-
     public void startTurn() throws InterruptedException{
 
     }
