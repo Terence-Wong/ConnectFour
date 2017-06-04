@@ -1,10 +1,9 @@
-package com.company;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by Terence on 2017-06-04.
+ * Created by Terence Wong, MAC CompSci Club(Senior) President
+ * June 2017
  */
 public class humanPlayer extends Player {
     String name = "Human";
