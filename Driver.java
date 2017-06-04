@@ -1,4 +1,7 @@
-package com.company;
+/**
+ * Created by Terence Wong, MAC CompSci Club(Senior) President
+ * June 2017
+ */
 
 import java.awt.*;
 import java.awt.event.*;
