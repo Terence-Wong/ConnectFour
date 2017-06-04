@@ -1,8 +1,9 @@
+package com.company;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-public class Driver extends JPanel{
+public class Main extends JPanel{
     //window settings
     static JFrame frame = new JFrame("(AI) Connect Four");
     static int columns = 7, rows = 6;
@@ -12,15 +13,16 @@ public class Driver extends JPanel{
     static int padding = 15;//space between pieces
     static final int BOARDXOFFSET = 200, BOARDYOFFSET = 40;
     //game settings
-    static int sleepTime = 600;
+    static int sleepTime = 50;
     //game variables
     static Player p1;
     static Player p2;
     static int boardw = columns * (cellsize+padding) + padding;
     static int boardh = rows * (cellsize+padding) + padding;
-    static int[][] board = new int[rows][columns];//7 columns 6 rows,remember arrays are 0-based!
-    static boolean gameOver = false;
-    static int swx,swy,fwx,fwy; //coords for winning combo
+    static int[][] board = new int[rows][columns];//7 columns 6 rows,remember arrays are 0-based!   //
+    static boolean gameOver = false;    //
+    static boolean draw = false;    //
+    static int swx,swy,fwx,fwy; //coords for winning combo  //
     /*we use
     * 0 -to represent empty cell
     * 1 -to represent com.company.Player 1's piece
@@ -36,7 +38,7 @@ public class Driver extends JPanel{
     int checkX = 0;
     int checkY = 0;
 
-    public void Driver(){
+    public void Main(){
 
     }
     @Override
@@ -76,7 +78,7 @@ public class Driver extends JPanel{
                     BOARDYOFFSET + checkY *(padding+cellsize),cellsize+ padding*2,cellsize+ padding*2);
         }
         g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        if(p1turn){
+        if(!p1turn){
             g.setColor(p1Col);
             g.drawString(p1Name, 70, 100);
             g.setColor(Color.black);
@@ -87,7 +89,7 @@ public class Driver extends JPanel{
             g.setColor(p2Col);
             g.drawString(p2Name, 850, 100);
         }
-        if(gameOver){
+        if(gameOver && !draw){
             g.setColor(winCol);
             int xdir = (fwx - swx)/3;
             int ydir = (fwy - swy)/3;
@@ -101,14 +103,21 @@ public class Driver extends JPanel{
         frame.setSize(WIDTH,HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Driver project = new Driver();
+        Main project = new Main();
         frame.add(project);
         frame.repaint();
 
-        p1 = new SampleBot(project,1);
-        p2 = new SampleBot(project,2);
+        p1 = new humanPlayer(project,1);
+        //p1 = new SampleBot(project,1);
+        //p2 = new SampleBot(project,2);
+        p2 = new humanPlayer(project,2);
         p1Name = p1.getName();
         p2Name = p2.getName();
+        //start the game
+        startGame();
+    }
+
+    public static void startGame() throws InterruptedException{
         //start the game
         do{
             if(p1turn){
@@ -120,8 +129,6 @@ public class Driver extends JPanel{
         }while(!checkGameOver());
         frame.repaint();
     }
-
-
 
     ///output data to client method
     public int checkCell(int x, int y, int player) throws InterruptedException {
@@ -144,7 +151,7 @@ public class Driver extends JPanel{
         return board[y][x];
     }
     //input data from client method
-    public void placePiece(int x,int player) throws InterruptedException {
+    public void placePiece(int x,int player){
         //manual 'catch' of bad data
         if(x < 0 || x >= columns){//x is out of board bounds
             disqualified(player);
@@ -153,7 +160,11 @@ public class Driver extends JPanel{
                 if(board[y][x] == 0){
                     board[y][x] = player;
                     frame.repaint();
-                    Thread.sleep(sleepTime);
+                    try{
+                        Thread.sleep(sleepTime);
+                    }catch(InterruptedException e){
+
+                    }
                     setGameOver(x,y,player);
                     return;
                 }
@@ -181,8 +192,9 @@ public class Driver extends JPanel{
     }
     public static void setGameOver(int x, int y, int player) {//coords for last piece placed
         if(checkWon(x,y,player)) {//p1
-            gameOverBox(player);
+            frame.repaint();
             gameOver = true;
+            gameOverBox(player);
             return;
         }
         //check filled
@@ -198,6 +210,7 @@ public class Driver extends JPanel{
         }
         if(result){//draw
             gameOverBox(0);
+            draw = true;
             gameOver = true;
         }
         return;
@@ -284,8 +297,14 @@ public class Driver extends JPanel{
             int ty = cx + cy;
             for(int i = 0; i < ty + 1; i++){
                 if(board[ty - i][i] == player){
+                    if(c == 0){
+                        swx = i;
+                        swy = ty - i;
+                    }
                     c++;
                     if(c == 4){
+                        fwx = i;
+                        fwy = ty - i;
                         return true;
                     }
                 }else{
@@ -296,8 +315,14 @@ public class Driver extends JPanel{
             int tx = cx + cy - rows + 1;
             for(int i = 0; i < columns - tx; i++){
                 if(board[rows - 1 - i][tx + i] == player){
+                    if(c == 0){
+                        swx = tx + i;
+                        swy = rows - 1 - i;
+                    }
                     c++;
                     if(c == 4){
+                        fwx = tx + i;
+                        fwy = rows - 1 - i;
                         return true;
                     }
                 }else{
@@ -327,8 +352,25 @@ public class Driver extends JPanel{
                 message = "("+ p2Name +") Player 2 wins, p1 disqualified for illegal move";
                 break;
         }
-        myPanel.add(new JLabel(message));
-        JOptionPane.showConfirmDialog(null, myPanel,
+        myPanel.add(new JLabel(message + " Would you like to play again?"));
+        int response = JOptionPane.showConfirmDialog(null, myPanel,
                 "Game Over", JOptionPane.OK_OPTION);
+        if(response == 0){
+            restart();
+        }
+    }
+    public static void restart(){
+        board = new int[rows][columns];//
+        gameOver = false;    //
+        draw = false;    //
+        swx = 0;
+        swy = 0;
+        fwx = 0;
+        fwy = 0;
+        try {
+            startGame();
+        }catch(InterruptedException e){
+
+        }
     }
 }
