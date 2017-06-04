@@ -1,8 +1,8 @@
-package com.company;
 
 import java.util.Random;
 /**
- * Created by Terence on 2017-06-02.
+ * Created by Terence Wong, MAC CompSci Club(Senior) President
+ * June 2017
  */
 public class SampleBot extends Player {
     String name = "SampleBot";//your name, MUST HAVE/WATCH
