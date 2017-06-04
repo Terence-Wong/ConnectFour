@@ -1,16 +1,19 @@
+package com.company;
 
 import java.util.Random;
 /**
  * Created by Terence on 2017-06-02.
  */
 public class SampleBot extends Player {
-    String name = "Sample Bot";//your name, MUST HAVE/WATCH
+    String name = "SampleBot";//your name, MUST HAVE/WATCH
     static Random rand = new Random();
-    static Driver game;
+    static Main game;
     int playerType;
-    public SampleBot(Driver g, int p){//constructor, MUST HAVE
+    public SampleBot(Main g, int p){//constructor, MUST HAVE
         game = g;
         playerType = p;
+        //playerType = whether youre blue(1) or red(2)
+
     }
     @Override
     public void startTurn(){//driver class calls this, MUST HAVE
@@ -36,18 +39,16 @@ public class SampleBot extends Player {
         *
         * */
 
-        try {
-            int x = rand.nextInt(7);
-            while (game.checkCell(x, 0, playerType) != 0) {
-                x++;
-                if (x == 7) {
-                    x = 0;
-                }
+
+        int x = rand.nextInt(7);
+        while (game.checkCell(x, 0, playerType) != 0) {
+            x++;
+            if (x == 7) {
+                x = 0;
             }
-            game.placePiece(x, playerType);
-        }catch(InterruptedException e){
-            System.out.println(e.getMessage());
         }
+        game.placePiece(x, playerType);
+
     }
     @Override
     public String getName(){//used by driver class, MUST HAVE

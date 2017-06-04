@@ -131,7 +131,7 @@ public class Main extends JPanel{
     }
 
     ///output data to client method
-    public int checkCell(int x, int y, int player) throws InterruptedException {
+    public int checkCell(int x, int y, int player) {
         if(x < 0 || x >= columns){
             disqualified(player);
             return -1;//error code
@@ -144,7 +144,11 @@ public class Main extends JPanel{
         checkX = x;
         checkY = y;
         frame.repaint();
-        Thread.sleep(sleepTime);
+        try {
+            Thread.sleep(sleepTime);
+        }catch(InterruptedException e){
+            
+        }
         checkedCell = false;
         frame.repaint();
         //send the actual data
