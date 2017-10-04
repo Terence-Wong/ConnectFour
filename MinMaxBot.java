@@ -1,6 +1,13 @@
+/**
+ * Created by Terence Wong, MAC CompSci Club(Senior) President
+ * October 2017
+ *
+ * Generic Minimax algorithm. Augmented where minimum case node
+ * value is an average, not a minimum
+ */
 public class MinMaxBot extends Player{
 	static Main game;
-    int playerType;
+    	int playerType;
 	boolean p1;
 	static int cx = -1, cy = -1;
 	static int columns = 7, rows = 6;
@@ -11,13 +18,13 @@ public class MinMaxBot extends Player{
 	
 	public MinMaxBot(Main g, int p){
 		game = g;
-        playerType = p;
+        	playerType = p;
 		if (p == 1){
 			p1 = true;
 		}else{
 			p1 = false;
 		}
-    }
+    	}
 	
 	//alterate, level select
 	public MinMaxBot(Main g, int p, int level){
@@ -25,16 +32,16 @@ public class MinMaxBot extends Player{
 		name = "Level " + depths + " Bot";
 		
 		game = g;
-        playerType = p;
+        	playerType = p;
 		if (p == 1){
 			p1 = true;
 		}else{
 			p1 = false;
 		}
-    }
+    	}
 	
 	@Override
-    public void startTurn() throws InterruptedException{
+   	public void startTurn() throws InterruptedException{
 		Board b = new Board();
 		for(int x = 0; x < 7; x++){//horizontal
 			for(int y = 0; y < 6; y++){//vertical
@@ -42,11 +49,11 @@ public class MinMaxBot extends Player{
 			}
 		}
 		game.placePiece(getMove(b,depths, p1 ), playerType);
-    }
+	}
 	@Override
-    public String getName(){
-        return name;
-    }
+	public String getName(){
+		return name;
+	}
 	public byte getMove(Board board, byte depth, boolean p){
 		
 		double result = -Double.MAX_VALUE;
