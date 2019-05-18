@@ -5,7 +5,7 @@ public class NothingBot extends Player {
     String name = "NothingBot";//your name, MUST HAVE/WATCH
     static Main game;
     int playerType;
-    public SampleBot(Main g, int p){//constructor method
+    public NothingBot(Main g, int p){//constructor method
         game = g;
         playerType = p;
         //playerType = whether youre blue(1) or red(2)
