@@ -5,7 +5,6 @@
  * Generic Minimax algorithm. Augmented where minimum case node
  * value is an average, not a minimum
  */
-
 public class MinMaxBot extends Player{
 	static Main game;
     	int playerType;
