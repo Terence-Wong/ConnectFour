@@ -374,6 +374,7 @@ public class Main extends JPanel{
         swy = 0;
         fwx = 0;
         fwy = 0;
+        frame.repaint();
         try {
             startGame();
         }catch(InterruptedException e){
