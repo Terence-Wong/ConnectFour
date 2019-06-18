@@ -1,5 +1,7 @@
 /**
  * Created by YOU!
+ * 
+ * More involved scaffold for making bots
  */
 public class NothingBot extends Player {
     String name = "NothingBot";//your name, MUST HAVE/WATCH
